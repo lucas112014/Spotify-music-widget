@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Spotify Widget</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background-color: #242424;
+            color: white;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #1db954;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #1ed760;
+        }
+        #player-container {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Spotify Desktop Widget</h2>
+        <!-- You can paste either the full Spotify iframe embed code OR a track link here -->
+        <input type="text" id="spotifyInput" placeholder="Paste Spotify Embed code or Link here...">
+        <button onclick="loadPlayer()">Load Track</button>
+        
+        <div id="player-container">
+            <!-- Default placeholder embed -->
+            <iframe id="spotifyIframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4cOdK2wGLETKBW3PvgPWqT?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function loadPlayer() {
+            let input = document.getElementById('spotifyInput').value.trim();
+            let iframe = document.getElementById('spotifyIframe');
+
+            // If the user pasted a full iframe code, extract the src URL
+            if (input.includes('<iframe')) {
+                let match = input.match(/src="([^"]+)"/);
+                if (match && match[1]) {
+                    iframe.src = match[1];
+                }
+            } 
+            // If they pasted a standard Spotify web link, convert it to an embed link
+            else if (input.includes('open.spotify.com/track/')) {
+                let trackID = input.split('/track/')[1].split('?')[0];
+                iframe.src = `https://open.spotify.com/embed/track/${trackID}?utm_source=generator`;
+            } else {
+                alert("Please paste a valid Spotify track link or embed code.");
+            }
+        }
+    </script>
+
+</body>
+</html>
